@@ -2029,7 +2029,7 @@ pre[class*='language-']:hover .copy-btn {
     color: var(--hty-text-color);
   }
   :root:not([data-user-color-scheme]) body::before {
-    background-image: url("https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/bg/galaxy.jpg");
+    background-image: url("");
   }
   :root:not([data-user-color-scheme]) .char {
     background-color: rgba(0,0,0,0.5);
@@ -2105,7 +2105,7 @@ pre[class*='language-']:hover .copy-btn {
   color: var(--hty-text-color);
 }
 [data-user-color-scheme='dark'] body::before {
-  background-image: url("https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/bg/galaxy.jpg");
+  background-image: url("");
 }
 [data-user-color-scheme='dark'] .char {
   background-color: rgba(0,0,0,0.5);
