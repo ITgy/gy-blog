@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="木生炎"><meta name="copyright" content="木生炎"><meta name="generator" content="Hexo 5.2.0"><meta name="theme" content="hexo-theme-yun"><title>ECMAScript数据类型与值（一） | 你好世界</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.22/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="shortcut icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"example.com","root":"/","title":"木生炎的小站","version":"1.3.0","mode":"auto","copycode":true,"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><link rel="preconnect" href="https://www.google-analytics.com" crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-121354150-1"></script><script>if (CONFIG.hostname === location.hostname) {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-121354150-1');
+}</script><script data-ad-client="ca-pub-2245427233262012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M9KWR9L');</script><!-- End Google Tag Manager --><meta name="description" content="以下内容基于Draft ECMA-262 &#x2F; December 7, 2020阶段的标准以及网上搜集整理的资料。 ECMAScript类型ECMAScript数据类型包括：Undefined、Null、Boolean、String、Number、Symbol、BigInt、Object。 Undefined 类型Undefined类型只有一个值，就是undefined，任何一个没有赋过值的变量的默">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ECMAScript数据类型与值（一）">
+<meta property="og:url" content="http://example.com/2020/12/11/ECMAScript%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%80%BC/index.html">
+<meta property="og:site_name" content="你好世界">
+<meta property="og:description" content="以下内容基于Draft ECMA-262 &#x2F; December 7, 2020阶段的标准以及网上搜集整理的资料。 ECMAScript类型ECMAScript数据类型包括：Undefined、Null、Boolean、String、Number、Symbol、BigInt、Object。 Undefined 类型Undefined类型只有一个值，就是undefined，任何一个没有赋过值的变量的默">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-11T03:34:29.911Z">
+<meta property="article:modified_time" content="2020-12-13T08:34:05.193Z">
+<meta property="article:author" content="木生炎">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="Table of Contents"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="Overview"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info mickey-mouse"><a class="site-author-avatar" href="/about/" title="木生炎"><img width="96" loading="lazy" src="/image/avatar.png" alt="木生炎"></a><div class="site-author-name"><a href="/about/">木生炎</a></div><a class="site-name" href="/about/site.html">你好世界</a><sub class="site-subtitle"></sub><div class="site-desciption"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="Home"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">0</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">0</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://github.com/ITgy" title="github"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ECMAScript%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">ECMAScript类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Undefined-%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">Undefined 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Null-%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">Null 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Boolean-%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">Boolean 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String-%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">String 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Number-%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.</span> <span class="toc-text">Number 类型</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="page"><header class="post-header"><h1 class="post-title">ECMAScript数据类型与值（一）</h1></header><article id="page"><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><p><strong>以下内容基于Draft ECMA-262 / December 7, 2020阶段的标准以及网上搜集整理的资料。</strong></p>
+<h2 id="ECMAScript类型"><a href="#ECMAScript类型" class="headerlink" title="ECMAScript类型"></a>ECMAScript类型</h2><p>ECMAScript数据类型包括：<code>Undefined</code>、<code>Null</code>、<code>Boolean</code>、<code>String</code>、<code>Number</code>、<code>Symbol</code>、<code>BigInt</code>、<code>Object</code>。</p>
+<h3 id="Undefined-类型"><a href="#Undefined-类型" class="headerlink" title="Undefined 类型"></a><strong>Undefined</strong> 类型</h3><p><code>Undefined</code>类型只有一个值，就是<strong>undefined</strong>，任何一个没有赋过值的变量的默认值都是 <strong>undefined</strong>。<strong>undefined</strong>是一个全局的变量，早期的JavaScript版本可以为它重新赋值，现在只能在函数里面局部地去定义Undefined的值：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">var</span> <span class="token keyword">undefined</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">undefined</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1</span></code></pre>
+
+<p>一般用<code>void 0;</code>来产生undefined，因为void运算符是个关键字，void后面不管跟什么，都会变成undefined这个值，所以在语法上最简洁地得到undefined的值的方法就是使用这个void关键字来进行一次运算。</p>
+<p>undefined不是一个关键字。</p>
+<h3 id="Null-类型"><a href="#Null-类型" class="headerlink" title="Null 类型"></a><strong>Null</strong> 类型</h3><p><code>Null</code>类型只有一个值，就是<strong>null</strong>。</p>
+<p>null是一个关键字</p>
+<h3 id="Boolean-类型"><a href="#Boolean-类型" class="headerlink" title="Boolean 类型"></a><strong>Boolean</strong> 类型</h3><p><code>Boolean</code>类型表示具有两个值的逻辑实体，分别为<strong>true</strong>和<strong>false</strong>。</p>
+<h3 id="String-类型"><a href="#String-类型" class="headerlink" title="String 类型"></a><strong>String</strong> 类型</h3><p>一个字符串是由0个或多个字符组成，若理解字符串，先理解字符是什么？首先，计算机并不认识每个字符的图形符号，计算机只能存储二进制数字。那么若想存储图形符号怎么办呢？这就不得不提<strong>字符集</strong>了。</p>
+<p>既然计算机只能存储二进制数字，那么就用特定的数字表示特定的图形符号。于是乎，数字与图形符号的映射关系诞生了，这个东西就叫<strong>字符集</strong>。其中与每个图形符号对应的数字也叫<strong>码点(Code Point)**（起个高大上的名字显得专业）。图形符号就是</strong>字符(Character)<strong>。这会儿我们应该知道了，计算机实际存储的并不是一个个的字符，而是这一个个字符对应的</strong>码点<strong>。由于计算机存储的基本单位是字节（8bit），而</strong>码点<strong>的大小有可能超出一个字节，为了解决这个问题，</strong>编码方式(Encoding)<strong>出现了。</strong>编码方式**规定了计算机如何存储码点。</p>
+<p><a href="">了解更多字符集相关的内容</a></p>
+<p>ECMAScript采用的是UTF16编码，即把每个UTF16单元当作一个字符来处理，我们用来操作字符串的一些方法如charAt、charCodeAt、length等都是针对UTF16编码实现的，在处理BMP字符时，是正常的，但是在处理非BMP字符时就会出现问题。不过好在ES6对应的可以处理非BMP字符的方法，如fromCodePoint、codePointAt。</p>
+<p>一个字符串的最大长度为2<sup>52</sup>-1，注意这里的最大长度并不是所谓的字符数，实际上是受字符串的编码长度影响的，这是由于不同的编码方式，存储一个字符所占的内存空间不同。</p>
+<p>字符串可以看做是由字符构成的有序序列集合，每个字符都在这个序列中占据一个位置。这些位置用非负整数作索引，从索引0开始，以自然数排序直到字符串结束位置，例如：长度为5的字符串，第一个字符索引就是0，第二个是1，以此类推直到最后一位的索引是4。</p>
+<h3 id="Number-类型"><a href="#Number-类型" class="headerlink" title="Number 类型"></a>Number 类型</h3><p><strong>Number</strong>类型在JavaScript中有18437736874454810627(即 2<sup>64</sup>-2<sup>53</sup>+3)个值。基本复合IEEE754-2019规定的64位双精度浮点数的规则。除了IEEE标准的9,007,199,254,740,990(即2<sup>53</sup> - 2)在ECMAScript中表示为单个特殊的<strong>NaN</strong>值之外。</p>
+<p>除了<strong>NaN</strong>外还有两个特殊的值，分别是**+Infinity(正无穷)大<strong>和</strong>-Infinity(负无穷大)**</p>
+<p>其他的18,437,736,874,454,810,624(即2<sup>64</sup> - 2<sup>53</sup>)个值称为有限数。一半是正数，一半是负数;对于每一个有限的正数值，都有一个相应的具有相同大小的负值。</p>
+<p>根据双精度浮点数的定义，Number类型中有效的整数范围是-0x1fffffffffffff 至 0x1fffffffffffff，所以Number无法精确表示此范围外的整数。</p>
+<p>同样的根据浮点数的定义，非整数的Number类型无法用==或===来比较。</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">+</span> <span class="token number">0.2</span> <span class="token operator">==</span> <span class="token number">0.3</span><span class="token punctuation">)</span> <span class="token comment">//false</span></code></pre>
+
+<p>这里输出的结果是 false，说明两边不相等的，这是浮点运算的特点，浮点数运算的精度问题导致等式左右的结果并不是严格相等，而是相差了个微小的值。正确的比较方法是使用JavaScript提供的最小精度值：</p>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">+</span> <span class="token number">0.2</span> <span class="token operator">-</span> <span class="token number">0.3</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> Number<span class="token punctuation">.</span><span class="token constant">EPSILON</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//true</span></code></pre>
+
+<p>检查等式左右两边差的绝对值是否小于最小精度，才是正确的比较浮点数的方法。这段代码结果就是 true 了。</p>
+<p>所有绝对值不大于2<sup>53</sup>的正整数和负整数都可以用Number类型来表示。而且整数0也有+0(可以省略+号)和-0的表示方式。他们在加减法类的运算中没有区别，但是在除法中需要注意，当除数为-0时得到的是**-Infinity<strong>，当除数是+0时得到的是</strong>+Infinity**。</p>
+<p><a href="">双精度浮点类型的表示原理</a></p>
+<p><strong>注意：</strong></p>
+<p><strong>Number</strong>类型的表示方式分为以下四种：</p>
+<ul>
+<li><p><strong>十六进制(HexIntegerLiteral)</strong></p>
+<pre class="language-none"><code class="language-none">0xFF</code></pre>
+</li>
+<li><p><strong>十进制(DecimalLiteral)</strong></p>
+<pre class="language-none"><code class="language-none">1
+1.1
+1.
+.1
+1e2</code></pre>
+</li>
+<li><p><strong>八进制(OctalIntegerLiteral)</strong></p>
+<pre class="language-none"><code class="language-none">0o17</code></pre>
+</li>
+<li><p><strong>二进制(BinaryIntegerLiteral)</strong></p>
+<pre class="language-none"><code class="language-none">0b101</code></pre>
+
+
+</li>
+</ul>
+</div></section></article></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2020 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 木生炎</span></div><div class="powered"><span>Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v5.2.0</span><span class="footer-separator">|</span><span>Theme - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.3.0</span></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="Search"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="Searching..." value=""></div><div id="local-search-result"></div></div><script>const date = new Date();
+const today = (date.getMonth() + 1) + "-" + date.getDate()
+const mourn_days = ["4-4","5-12","9-18"]
+if (mourn_days.includes(today)) {
+  document.documentElement.style.filter = "grayscale(1)";
+}</script></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
